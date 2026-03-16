@@ -1,0 +1,13 @@
+package com.floodrescue.module.rescue.dto.request;
+
+import jakarta.validation.constraints.Size;
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+public class ReopenCancelledRequest {
+    @Size(max = 1000)
+    private String reason;
+}
+
