@@ -1,47 +1,52 @@
-package com.floodrescue.module.user.controller;
+package com.floodrescue.module.rescue.controller;
 
-import com.floodrescue.module.user.dto.request.UpdateMyProfileRequest;
-import com.floodrescue.module.user.dto.response.UserProfileResponse;
-import com.floodrescue.module.user.service.UserService;
+import com.floodrescue.module.rescue.dto.request.SendChatMessageRequest;
+import com.floodrescue.module.rescue.dto.response.RescueChatMessageResponse;
+import com.floodrescue.module.rescue.service.RescueChatService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/user")
+@RequestMapping("/api/chat/rescue-requests")
 @RequiredArgsConstructor
-public class UserController {
+public class RescueChatController {
 
-    private final UserService userService;
+    private final RescueChatService rescueChatService;
 
-    @GetMapping("/profile")
-    public ResponseEntity<?> getMyProfile(Authentication authentication) {
-        Long userId = getCurrentUserId(authentication);
-        if (userId == null) {
-            return ResponseEntity.status(401).body(Map.of("message", "Unauthorized"));
-        }
-        UserProfileResponse response = userService.getMyProfile(userId);
-        return ResponseEntity.ok(response);
-    }
-
-    @PutMapping("/profile")
-    public ResponseEntity<?> updateMyProfile(
-            @Valid @RequestBody UpdateMyProfileRequest request,
+    @GetMapping("/{id}/messages")
+    public ResponseEntity<?> getMessages(
+            @PathVariable Long id,
             Authentication authentication) {
         Long userId = getCurrentUserId(authentication);
         if (userId == null) {
             return ResponseEntity.status(401).body(Map.of("message", "Unauthorized"));
         }
-        UserProfileResponse response = userService.updateMyProfile(userId, request);
+        List<RescueChatMessageResponse> response = rescueChatService.getMessages(id, userId);
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/{id}/messages")
+    public ResponseEntity<?> sendMessage(
+            @PathVariable Long id,
+            @Valid @RequestBody SendChatMessageRequest request,
+            Authentication authentication) {
+        Long userId = getCurrentUserId(authentication);
+        if (userId == null) {
+            return ResponseEntity.status(401).body(Map.of("message", "Unauthorized"));
+        }
+        RescueChatMessageResponse response = rescueChatService.sendMessage(id, userId, request.getMessage());
         return ResponseEntity.ok(response);
     }
 

@@ -17,5 +17,10 @@ public interface RescueTimelineRepository extends JpaRepository<RescueRequestTim
             Pageable pageable
     );
 
+    List<RescueRequestTimelineEntity> findByRescueRequestIdAndEventTypeOrderByCreatedAtAsc(
+            Long rescueRequestId,
+            TimelineEventType eventType
+    );
+
     long countByRescueRequestIdAndEventType(Long rescueRequestId, TimelineEventType eventType);
 }
