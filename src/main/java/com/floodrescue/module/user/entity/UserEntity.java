@@ -1,6 +1,5 @@
 package com.floodrescue.module.user.entity;
 
-import com.floodrescue.shared.util.EncryptedStringConverter;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -39,12 +38,10 @@ public class UserEntity {
     @Column(name = "full_name", nullable = false, length = 120)
     private String fullName;
 
-    @Convert(converter = EncryptedStringConverter.class)
-    @Column(length = 255)
+    @Column(length = 20)
     private String phone;
 
-    @Convert(converter = EncryptedStringConverter.class)
-    @Column(length = 512)
+    @Column(length = 120)
     private String email;
 
     @Column(name = "password_hash", nullable = false, length = 255)
@@ -56,7 +53,6 @@ public class UserEntity {
     @Column(name = "is_leader", nullable = false)
     @Builder.Default
     private Boolean isLeader = false; // true = leader của rescue team
-
 
     @Column(name = "rescue_request_blocked", nullable = false)
     @Builder.Default

@@ -1,7 +1,7 @@
 package com.floodrescue.module.inventory.service;
 
 import com.floodrescue.module.asset.entity.AssetEntity;
-import com.floodrescue.module.asset.repository.AssetRepository;
+import com.floodrescue.module.asset.repository.AssetReponsitory;
 import com.floodrescue.module.inventory.dto.request.InventoryIssueCreateRequest;
 import com.floodrescue.module.inventory.dto.response.InventoryIssueResponse;
 import com.floodrescue.module.inventory.entity.InventoryIssueEntity;
@@ -12,7 +12,7 @@ import com.floodrescue.module.inventory.repository.IssueRepository;
 import com.floodrescue.module.inventory.repository.ItemCategoryRepository;
 import com.floodrescue.module.notification.service.NotificationService;
 import com.floodrescue.module.relief.entity.ReliefRequestEntity;
-import com.floodrescue.module.relief.repository.ReliefRequestRepository;
+import com.floodrescue.module.relief.reponsitory.ReliefRequestRepository;
 import com.floodrescue.module.team.entity.TeamEntity;
 import com.floodrescue.module.team.repository.TeamRepository;
 import com.floodrescue.module.user.entity.UserEntity;
@@ -42,7 +42,7 @@ public class IssueService {
     private final StockService stockService;
     private final ReliefRequestRepository reliefRequestRepository;
     private final TeamRepository teamRepository;
-    private final AssetRepository assetRepository;
+    private final AssetReponsitory assetRepository;
     private final NotificationService notificationService;
     private final UserRepository userRepository;
 

@@ -21,10 +21,6 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
 
     boolean existsByPhone(String phone);
 
-    boolean existsByEmailAndIdNot(String email, Long id);
-
-    boolean existsByPhoneAndIdNot(String phone, Long id);
-
     List<UserEntity> findByTeamId(Long teamId);
 
     @Query("SELECT u FROM UserEntity u JOIN FETCH u.role r WHERE r.code = :roleCode ORDER BY u.id")

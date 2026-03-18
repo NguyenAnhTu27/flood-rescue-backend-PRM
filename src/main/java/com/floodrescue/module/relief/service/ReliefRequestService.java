@@ -13,8 +13,8 @@ import com.floodrescue.module.relief.dto.response.ReliefRequestResponse;
 import com.floodrescue.module.relief.entity.ReliefRequestEntity;
 import com.floodrescue.module.relief.entity.ReliefRequestLineEntity;
 import com.floodrescue.module.notification.service.NotificationService;
-import com.floodrescue.module.relief.repository.ReliefRequestLineRepository;
-import com.floodrescue.module.relief.repository.ReliefRequestRepository;
+import com.floodrescue.module.relief.reponsitory.ReliefRequestLineRepository;
+import com.floodrescue.module.relief.reponsitory.ReliefRequestRepository;
 import com.floodrescue.module.rescue.entity.RescueRequestEntity;
 import com.floodrescue.module.rescue.repository.RescueRequestRepository;
 import com.floodrescue.shared.enums.InventoryDocumentStatus;
@@ -29,7 +29,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -327,62 +326,6 @@ public class ReliefRequestService {
             page = reliefRequestRepository.findAll(pageable);
         }
         return page.map(r -> toResponse(r, reliefRequestLineRepository.findByReliefRequest(r)));
-    }
-
-    @Transactional
-    public ReliefRequestResponse approveReliefRequest(Long id, Long userId) {
-        ReliefRequestEntity relief = reliefRequestRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Yêu cầu cứu trợ không tồn tại"));
-
-        if (userId == null) {
-            throw new BusinessException("Không xác định được người duyệt yêu cầu cứu trợ");
-        }
-
-        List<ReliefRequestLineEntity> lines = reliefRequestLineRepository.findByReliefRequest(relief);
-        if (lines.isEmpty()) {
-            throw new BusinessException("Yêu cầu cứu trợ không có dòng hàng nào");
-        }
-
-        if (relief.getStatus() == InventoryDocumentStatus.APPROVED) {
-            return toResponse(relief, lines);
-        }
-        if (relief.getStatus() != InventoryDocumentStatus.DRAFT) {
-            throw new BusinessException("Không thể duyệt yêu cầu cứu trợ ở trạng thái " + relief.getStatus());
-        }
-
-        relief.setStatus(InventoryDocumentStatus.APPROVED);
-        relief = reliefRequestRepository.save(relief);
-
-        return toResponse(relief, lines);
-    }
-
-    @Transactional
-    public ReliefRequestResponse rejectReliefRequest(Long id, Long userId, String reason) {
-        ReliefRequestEntity relief = reliefRequestRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Yêu cầu cứu trợ không tồn tại"));
-
-        if (userId == null) {
-            throw new BusinessException("Không xác định được người từ chối yêu cầu cứu trợ");
-        }
-        if (!StringUtils.hasText(reason)) {
-            throw new BusinessException("Lý do từ chối không được để trống");
-        }
-        if (relief.getStatus() != InventoryDocumentStatus.DRAFT) {
-            throw new BusinessException("Chỉ được từ chối yêu cầu cứu trợ ở trạng thái DRAFT");
-        }
-
-        String trimmedReason = reason.trim();
-        String currentNote = relief.getNote();
-        if (StringUtils.hasText(currentNote)) {
-            relief.setNote(currentNote + "\n[TU CHOI] " + trimmedReason);
-        } else {
-            relief.setNote("[TU CHOI] " + trimmedReason);
-        }
-        relief.setStatus(InventoryDocumentStatus.CANCELLED);
-        relief = reliefRequestRepository.save(relief);
-
-        List<ReliefRequestLineEntity> lines = reliefRequestLineRepository.findByReliefRequest(relief);
-        return toResponse(relief, lines);
     }
 
     private ReliefRequestResponse toResponse(ReliefRequestEntity relief, List<ReliefRequestLineEntity> lines) {

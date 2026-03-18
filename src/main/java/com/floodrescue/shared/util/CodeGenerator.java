@@ -31,10 +31,4 @@ public class CodeGenerator {
         int randomPart = ThreadLocalRandom.current().nextInt(1000, 9999);
         return String.format("IS%s%04d", datePart, randomPart);
     }
-
-    public static String generateDistributionVoucherCode() {
-        String datePart = LocalDateTime.now().format(DATE_FORMAT);
-        int randomPart = ThreadLocalRandom.current().nextInt(1000, 9999);
-        return String.format("DV%s%04d", datePart, randomPart);
-    }
 }

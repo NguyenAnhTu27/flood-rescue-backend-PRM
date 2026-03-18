@@ -1,11 +1,11 @@
 package com.floodrescue.module.rescue.service;
 
 import com.floodrescue.module.asset.entity.AssetEntity;
-import com.floodrescue.module.asset.repository.AssetRepository;
+import com.floodrescue.module.asset.repository.AssetReponsitory;
 import com.floodrescue.module.rescue.dto.response.RescuerDashboardResponse;
 import com.floodrescue.module.rescue.dto.response.TaskGroupResponse;
 import com.floodrescue.module.rescue.dto.request.EscalateTaskGroupRequest;
-import com.floodrescue.module.rescue.entity.RescueAssignmentEntity;
+import com.floodrescue.module.rescue.entity.RescueAssigmentEntity;
 import com.floodrescue.module.rescue.entity.RescueRequestEntity;
 import com.floodrescue.module.rescue.entity.TaskGroupEntity;
 import com.floodrescue.module.rescue.entity.TaskGroupRequestEntity;
@@ -47,7 +47,7 @@ public class RescuerTaskServiceImpl implements RescuerTaskService {
     private final TaskGroupTimelineRepository taskGroupTimelineRepository;
     private final RescueAssignmentRepository rescueAssignmentRepository;
     private final RescueRequestRepository rescueRequestRepository;
-    private final AssetRepository assetRepository;
+    private final AssetReponsitory assetRepository;
     private final TaskGroupMapper taskGroupMapper;
     private final NotificationService notificationService;
 
@@ -60,7 +60,7 @@ public class RescuerTaskServiceImpl implements RescuerTaskService {
                 .orElseThrow(() -> new NotFoundException("Đội cứu hộ không tồn tại"));
 
         // Active assignments of this team
-        List<RescueAssignmentEntity> activeAssignments = rescueAssignmentRepository.findByTeamIdAndIsActiveTrue(teamId);
+        List<RescueAssigmentEntity> activeAssignments = rescueAssignmentRepository.findByTeamIdAndIsActiveTrue(teamId);
 
         // Only active task groups should appear on rescuer dashboard.
         List<TaskGroupStatus> activeStatuses = List.of(
@@ -81,10 +81,10 @@ public class RescuerTaskServiceImpl implements RescuerTaskService {
                         .id(asset.getId())
                         .code(asset.getCode())
                         .name(asset.getName())
-                        .assetType(asset.getAssetType() != null ? asset.getAssetType().name() : null)
+                        .assetType(asset.getAssetType())
                         .status(asset.getStatus() != null ? asset.getStatus().name() : null)
                         .build())
-                .collect(java.util.stream.Collectors.toList());
+                .toList();
 
         return RescuerDashboardResponse.builder()
                 .teamId(team.getId())
@@ -125,7 +125,7 @@ public class RescuerTaskServiceImpl implements RescuerTaskService {
         verifyGroupBelongsToTeam(group, teamId);
 
         List<TaskGroupRequestEntity> links = taskGroupRequestRepository.findByTaskGroupId(group.getId());
-        List<RescueAssignmentEntity> assignments = rescueAssignmentRepository.findByTaskGroupIdAndIsActiveTrue(group.getId());
+        List<RescueAssigmentEntity> assignments = rescueAssignmentRepository.findByTaskGroupIdAndIsActiveTrue(group.getId());
         List<TaskGroupTimelineEntity> timeline = taskGroupTimelineRepository.findByTaskGroupIdOrderByCreatedAtDesc(group.getId());
 
         return taskGroupMapper.toResponseWithDetails(group, links, assignments, timeline);
@@ -248,7 +248,7 @@ public class RescuerTaskServiceImpl implements RescuerTaskService {
             return 0L;
         }
 
-        List<RescueAssignmentEntity> activeAssignments = rescueAssignmentRepository.findByTeamIdAndIsActiveTrue(teamId);
+        List<RescueAssigmentEntity> activeAssignments = rescueAssignmentRepository.findByTeamIdAndIsActiveTrue(teamId);
         if (!activeAssignments.isEmpty()) {
             activeAssignments.forEach(a -> a.setIsActive(false));
             rescueAssignmentRepository.saveAll(activeAssignments);

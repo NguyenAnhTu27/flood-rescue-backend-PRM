@@ -1,7 +1,7 @@
 package com.floodrescue.module.rescue.mapper;
 
 import com.floodrescue.module.rescue.dto.response.TaskGroupResponse;
-import com.floodrescue.module.rescue.entity.RescueAssignmentEntity;
+import com.floodrescue.module.rescue.entity.RescueAssigmentEntity;
 import com.floodrescue.module.rescue.entity.TaskGroupEntity;
 import com.floodrescue.module.rescue.entity.TaskGroupRequestEntity;
 import com.floodrescue.module.rescue.entity.TaskGroupTimelineEntity;
@@ -40,7 +40,7 @@ public class TaskGroupMapper {
     public TaskGroupResponse toResponseWithDetails(
             TaskGroupEntity entity,
             List<TaskGroupRequestEntity> requests,
-            List<RescueAssignmentEntity> assignments,
+            List<RescueAssigmentEntity> assignments,
             List<TaskGroupTimelineEntity> timeline
     ) {
         TaskGroupResponse response = toResponse(entity);
@@ -99,7 +99,7 @@ public class TaskGroupMapper {
                 .build();
     }
 
-    private TaskGroupResponse.AssignmentItem toAssignmentItem(RescueAssignmentEntity entity) {
+    private TaskGroupResponse.AssignmentItem toAssignmentItem(RescueAssigmentEntity entity) {
         TaskGroupResponse.AssignmentItem.AssignmentItemBuilder builder =
                 TaskGroupResponse.AssignmentItem.builder()
                         .id(entity.getId())

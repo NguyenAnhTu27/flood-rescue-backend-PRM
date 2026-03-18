@@ -1,6 +1,5 @@
 package com.floodrescue.module.team.service;
 
-import com.floodrescue.module.map.dto.TeamLocationResponse;
 import com.floodrescue.module.team.dto.request.CreateTeamRequest;
 import com.floodrescue.module.team.dto.response.TeamMemberResponse;
 import com.floodrescue.module.team.dto.response.TeamResponse;
@@ -11,11 +10,8 @@ import com.floodrescue.module.user.entity.UserEntity;
 import com.floodrescue.module.user.repository.UserRepository;
 import com.floodrescue.shared.enums.TaskGroupStatus;
 import com.floodrescue.shared.exception.BusinessException;
-import com.floodrescue.shared.exception.NotFoundException;
 import com.floodrescue.shared.util.CodeGenerator;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -257,62 +253,6 @@ public class TeamServiceImpl implements TeamService {
             }
         } while (teamRepository.existsByCode(code));
         return code;
-    }
-
-    @Override
-    @Transactional
-    public TeamEntity updateTeamLocation(Long teamId, Double latitude, Double longitude) {
-        TeamEntity team = teamRepository.findById(teamId)
-                .orElseThrow(() -> new NotFoundException("Đội cứu hộ không tồn tại"));
-        team.setCurrentLatitude(latitude);
-        team.setCurrentLongitude(longitude);
-        team.setCurrentLocationUpdatedAt(java.time.LocalDateTime.now());
-        return teamRepository.save(team);
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public List<TeamLocationResponse> getAllTeamLocations() {
-        return teamRepository.findByStatusAndCurrentLatitudeIsNotNull((byte) 1).stream()
-                .map(this::toLocationResponse)
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public List<TeamLocationResponse> findNearestTeams(Double lat, Double lng, Double radiusKm) {
-        return teamRepository.findByStatusAndCurrentLatitudeIsNotNull((byte) 1).stream()
-                .map(team -> {
-                    double dist = haversine(lat, lng, team.getCurrentLatitude(), team.getCurrentLongitude());
-                    TeamLocationResponse r = toLocationResponse(team);
-                    r.setDistanceKm(dist);
-                    return r;
-                })
-                .filter(r -> r.getDistanceKm() <= radiusKm)
-                .sorted(java.util.Comparator.comparingDouble(TeamLocationResponse::getDistanceKm))
-                .collect(Collectors.toList());
-    }
-
-    private TeamLocationResponse toLocationResponse(TeamEntity team) {
-        return TeamLocationResponse.builder()
-                .teamId(team.getId())
-                .name(team.getName())
-                .status(team.getStatus())
-                .teamType(team.getTeamType())
-                .latitude(team.getCurrentLatitude())
-                .longitude(team.getCurrentLongitude())
-                .lastLocationUpdate(team.getCurrentLocationUpdatedAt())
-                .build();
-    }
-
-    private double haversine(double lat1, double lon1, double lat2, double lon2) {
-        double R = 6371.0;
-        double dLat = Math.toRadians(lat2 - lat1);
-        double dLon = Math.toRadians(lon2 - lon1);
-        double a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-                   Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) *
-                   Math.sin(dLon / 2) * Math.sin(dLon / 2);
-        return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     }
 
     private String normalizeRequired(String value, String errorMessage) {

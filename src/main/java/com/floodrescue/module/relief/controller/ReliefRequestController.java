@@ -2,7 +2,6 @@ package com.floodrescue.module.relief.controller;
 
 import com.floodrescue.module.relief.dto.request.ReliefApproveDispatchRequest;
 import com.floodrescue.module.relief.dto.request.ReliefRequestCreateRequest;
-import com.floodrescue.module.relief.dto.request.ReliefRequestRejectRequest;
 import com.floodrescue.module.relief.dto.request.ReliefRescuerStatusUpdateRequest;
 import com.floodrescue.module.relief.dto.response.ManagerReliefDashboardResponse;
 import com.floodrescue.module.relief.dto.response.ManagerReliefDispatchDashboardResponse;
@@ -95,19 +94,6 @@ public class ReliefRequestController {
         return ResponseEntity.ok(reliefRequestService.listReliefRequests(status, pageable));
     }
 
-    /**
-     * Duyệt yêu cầu cứu trợ (đơn giản).
-     */
-    @PutMapping("/requests/{id}/approve")
-    @PreAuthorize("hasAnyRole('ADMIN','MANAGER')")
-    public ResponseEntity<ReliefRequestResponse> approveReliefRequest(
-            @PathVariable Long id,
-            Authentication authentication
-    ) {
-        Long userId = getCurrentUserId(authentication);
-        return ResponseEntity.ok(reliefRequestService.approveReliefRequest(id, userId));
-    }
-
     @GetMapping("/requests/generate-code")
     @PreAuthorize("hasAnyRole('ADMIN','MANAGER','CITIZEN')")
     public ResponseEntity<Map<String, String>> generateReliefRequestCode() {
@@ -158,18 +144,14 @@ public class ReliefRequestController {
         return ResponseEntity.ok(reliefRequestService.approveAndDispatch(id, managerId, request.getAssignedTeamId(), request.getNote()));
     }
 
-    /**
-     * Từ chối yêu cầu cứu trợ.
-     */
     @PutMapping("/requests/{id}/reject")
     @PreAuthorize("hasAnyRole('ADMIN','MANAGER')")
-    public ResponseEntity<ReliefRequestResponse> rejectReliefRequest(
+    public ResponseEntity<ReliefRequestResponse> rejectRequest(
             @PathVariable Long id,
-            @Valid @RequestBody ReliefRequestRejectRequest request,
-            Authentication authentication
+            @RequestBody(required = false) Map<String, String> payload
     ) {
-        Long userId = getCurrentUserId(authentication);
-        return ResponseEntity.ok(reliefRequestService.rejectReliefRequest(id, userId, request.getReason()));
+        String reason = payload == null ? null : payload.get("reason");
+        return ResponseEntity.ok(reliefRequestService.rejectRequest(id, reason));
     }
 
     @GetMapping("/rescuer/requests")

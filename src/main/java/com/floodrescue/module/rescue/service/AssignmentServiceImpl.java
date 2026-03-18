@@ -1,12 +1,12 @@
 package com.floodrescue.module.rescue.service;
 
 import com.floodrescue.module.asset.entity.AssetEntity;
-import com.floodrescue.module.asset.repository.AssetRepository;
+import com.floodrescue.module.asset.repository.AssetReponsitory;
 import com.floodrescue.module.notification.service.NotificationService;
 import com.floodrescue.module.rescue.dto.request.AssignTaskGroupRequest;
 import com.floodrescue.module.rescue.dto.response.AssignmentResponse;
 import com.floodrescue.module.rescue.dto.response.TaskGroupResponse;
-import com.floodrescue.module.rescue.entity.RescueAssignmentEntity;
+import com.floodrescue.module.rescue.entity.RescueAssigmentEntity;
 import com.floodrescue.module.rescue.entity.RescueRequestEntity;
 import com.floodrescue.module.rescue.entity.TaskGroupEntity;
 import com.floodrescue.module.rescue.entity.TaskGroupRequestEntity;
@@ -42,7 +42,7 @@ public class AssignmentServiceImpl implements AssignmentService {
     private final RescueAssignmentRepository rescueAssignmentRepository;
     private final RescueRequestRepository rescueRequestRepository;
     private final TeamRepository teamRepository;
-    private final AssetRepository assetRepository;
+    private final AssetReponsitory assetRepository;
     private final UserRepository userRepository;
     private final TaskGroupMapper mapper;
     private final NotificationService notificationService;
@@ -99,7 +99,7 @@ public class AssignmentServiceImpl implements AssignmentService {
                 .orElseThrow(() -> new NotFoundException("Người dùng không tồn tại"));
 
         // Deactivate previous active assignments
-        List<RescueAssignmentEntity> currentAssignments =
+        List<RescueAssigmentEntity> currentAssignments =
                 rescueAssignmentRepository.findByTaskGroupIdAndIsActiveTrue(group.getId());
         currentAssignments.forEach(a -> a.setIsActive(false));
         if (!currentAssignments.isEmpty()) {
@@ -107,7 +107,7 @@ public class AssignmentServiceImpl implements AssignmentService {
         }
 
         // Create new assignment
-        RescueAssignmentEntity assignment = RescueAssignmentEntity.builder()
+        RescueAssigmentEntity assignment = RescueAssigmentEntity.builder()
                 .taskGroup(group)
                 .team(team)
                 .asset(asset)
@@ -141,7 +141,7 @@ public class AssignmentServiceImpl implements AssignmentService {
                 .build();
         taskGroupTimelineRepository.save(tl);
 
-        List<RescueAssignmentEntity> allAssignments =
+        List<RescueAssigmentEntity> allAssignments =
                 rescueAssignmentRepository.findByTaskGroupIdAndIsActiveTrue(group.getId());
         List<TaskGroupTimelineEntity> timeline =
                 taskGroupTimelineRepository.findByTaskGroupIdOrderByCreatedAtDesc(group.getId());
@@ -168,14 +168,14 @@ public class AssignmentServiceImpl implements AssignmentService {
     @Override
     @Transactional(readOnly = true)
     public AssignmentResponse getLatestActiveAssignment(Long taskGroupId) {
-        List<RescueAssignmentEntity> active =
+        List<RescueAssigmentEntity> active =
                 rescueAssignmentRepository.findByTaskGroupIdAndIsActiveTrue(taskGroupId);
         if (active.isEmpty()) {
             throw new NotFoundException("Không có phân công nào đang hoạt động cho nhóm nhiệm vụ này");
         }
 
         // Giả sử chỉ có 1 active assignment
-        RescueAssignmentEntity a = active.get(0);
+        RescueAssigmentEntity a = active.get(0);
 
         AssignmentResponse.AssignmentResponseBuilder builder = AssignmentResponse.builder()
                 .id(a.getId())
