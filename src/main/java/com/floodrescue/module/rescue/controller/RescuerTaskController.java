@@ -11,6 +11,7 @@ import com.floodrescue.module.rescue.service.RescueRequestService;
 import com.floodrescue.module.rescue.service.RescuerTaskService;
 import com.floodrescue.shared.enums.RescueRequestStatus;
 import com.floodrescue.shared.enums.TaskGroupStatus;
+import com.floodrescue.shared.exception.BusinessException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -21,6 +22,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 @RestController
@@ -107,12 +109,14 @@ public class RescuerTaskController {
     @PutMapping("/task-groups/{id}/status")
     public ResponseEntity<TaskGroupResponse> updateMyTaskGroupStatus(
             @PathVariable Long id,
-            @RequestParam TaskGroupStatus status,
+            @RequestParam String status,
             @RequestParam(required = false) String note,
             Authentication authentication
     ) {
         Long userId = getCurrentUserId(authentication);
-        return ResponseEntity.ok(rescuerTaskService.updateMyTaskGroupStatus(userId, id, status, note));
+        return ResponseEntity.ok(
+                rescuerTaskService.updateMyTaskGroupStatus(userId, id, parseTaskGroupStatus(status), note)
+        );
     }
 
     @PostMapping("/task-groups/{id}/escalate")
@@ -157,5 +161,20 @@ public class RescuerTaskController {
                 "message", "Đã trả tài sản về trạng thái sẵn sàng",
                 "returnedAssetCount", returnedCount
         ));
+    }
+
+    private TaskGroupStatus parseTaskGroupStatus(String rawStatus) {
+        if (rawStatus == null || rawStatus.trim().isEmpty()) {
+            throw new BusinessException("Trạng thái không được để trống");
+        }
+        String normalized = rawStatus.trim().toUpperCase(Locale.ROOT);
+        if ("COMPLETED".equals(normalized)) {
+            normalized = TaskGroupStatus.DONE.name();
+        }
+        try {
+            return TaskGroupStatus.valueOf(normalized);
+        } catch (IllegalArgumentException ex) {
+            throw new BusinessException("Trạng thái không hợp lệ: " + rawStatus);
+        }
     }
 }

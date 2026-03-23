@@ -9,12 +9,16 @@ import com.floodrescue.module.rescue.dto.response.RescueRequestResponse;
 import com.floodrescue.module.rescue.entity.RescueRequestAttachmentEntity;
 import com.floodrescue.module.rescue.entity.RescueRequestEntity;
 import com.floodrescue.module.rescue.entity.RescueRequestTimelineEntity;
+import com.floodrescue.module.rescue.entity.TaskGroupEntity;
 import com.floodrescue.module.rescue.entity.TaskGroupRequestEntity;
+import com.floodrescue.module.rescue.entity.TaskGroupTimelineEntity;
 import com.floodrescue.module.rescue.mapper.RescueRequestMapper;
 import com.floodrescue.module.rescue.repository.RescueAttachmentRepository;
 import com.floodrescue.module.rescue.repository.RescueRequestRepository;
 import com.floodrescue.module.rescue.repository.RescueTimelineRepository;
+import com.floodrescue.module.rescue.repository.TaskGroupRepository;
 import com.floodrescue.module.rescue.repository.TaskGroupRequestRepository;
+import com.floodrescue.module.rescue.repository.TaskGroupTimelineRepository;
 import com.floodrescue.module.notification.service.NotificationService;
 import com.floodrescue.module.user.entity.UserEntity;
 import com.floodrescue.module.user.repository.UserRepository;
@@ -50,7 +54,9 @@ public class RescueRequestServiceImpl implements RescueRequestService {
     private final RescueRequestMapper mapper;
     private final NotificationService notificationService;
     private final NotificationRepository notificationRepository;
+    private final TaskGroupRepository taskGroupRepository;
     private final TaskGroupRequestRepository taskGroupRequestRepository;
+    private final TaskGroupTimelineRepository taskGroupTimelineRepository;
 
     @Override
     @Transactional
@@ -424,6 +430,7 @@ public class RescueRequestServiceImpl implements RescueRequestService {
 
         UserEntity user = userRepository.findById(userId).orElseThrow();
         createTimelineEntry(entity, user, TimelineEventType.STATUS_CHANGE, oldStatus, newStatus, note);
+        syncLinkedTaskGroupFromRescueRequest(entity, user, note);
 
         return enrichEmergencyActionStatus(mapper.toResponse(entity));
     }
@@ -749,6 +756,132 @@ public class RescueRequestServiceImpl implements RescueRequestService {
                 .build();
 
         timelineRepository.save(timeline);
+    }
+
+    private void syncLinkedTaskGroupFromRescueRequest(RescueRequestEntity request, UserEntity actor, String note) {
+        if (request == null || request.getId() == null) {
+            return;
+        }
+
+        TaskGroupEntity taskGroup = taskGroupRequestRepository.findByRescueRequestId(request.getId()).stream()
+                .map(TaskGroupRequestEntity::getTaskGroup)
+                .filter(Objects::nonNull)
+                .max(java.util.Comparator.comparing(TaskGroupEntity::getId))
+                .orElse(null);
+        if (taskGroup == null || taskGroup.getId() == null) {
+            return;
+        }
+
+        List<TaskGroupRequestEntity> groupLinks = taskGroupRequestRepository.findByTaskGroupId(taskGroup.getId());
+        TaskGroupStatus derivedStatus = deriveTaskGroupStatus(groupLinks);
+        if (derivedStatus == null) {
+            return;
+        }
+
+        TaskGroupStatus oldGroupStatus = taskGroup.getStatus();
+        if (oldGroupStatus != derivedStatus) {
+            taskGroup.setStatus(derivedStatus);
+            taskGroup = taskGroupRepository.save(taskGroup);
+            taskGroupTimelineRepository.save(TaskGroupTimelineEntity.builder()
+                    .taskGroup(taskGroup)
+                    .actor(actor)
+                    .eventType("REQUEST_STATUS_SYNC")
+                    .note(buildTaskGroupSyncNote(request, oldGroupStatus, derivedStatus, note))
+                    .build());
+        }
+
+        syncAllRequestsFromTaskGroup(taskGroup.getId(), derivedStatus);
+    }
+
+    private TaskGroupStatus deriveTaskGroupStatus(List<TaskGroupRequestEntity> groupLinks) {
+        if (groupLinks == null || groupLinks.isEmpty()) {
+            return null;
+        }
+
+        List<RescueRequestStatus> statuses = groupLinks.stream()
+                .map(TaskGroupRequestEntity::getRescueRequest)
+                .filter(Objects::nonNull)
+                .map(RescueRequestEntity::getStatus)
+                .filter(Objects::nonNull)
+                .toList();
+        if (statuses.isEmpty()) {
+            return null;
+        }
+
+        boolean hasInProgress = statuses.stream().anyMatch(status -> status == RescueRequestStatus.IN_PROGRESS);
+        if (hasInProgress) {
+            return TaskGroupStatus.IN_PROGRESS;
+        }
+
+        boolean hasAssigned = statuses.stream().anyMatch(status -> status == RescueRequestStatus.ASSIGNED);
+        if (hasAssigned) {
+            return TaskGroupStatus.ASSIGNED;
+        }
+
+        boolean allCancelledLike = statuses.stream().allMatch(status ->
+                status == RescueRequestStatus.CANCELLED || status == RescueRequestStatus.DUPLICATE);
+        if (allCancelledLike) {
+            return TaskGroupStatus.CANCELLED;
+        }
+
+        boolean allTerminal = statuses.stream().allMatch(status ->
+                status == RescueRequestStatus.COMPLETED
+                        || status == RescueRequestStatus.CANCELLED
+                        || status == RescueRequestStatus.DUPLICATE);
+        boolean hasCompleted = statuses.stream().anyMatch(status -> status == RescueRequestStatus.COMPLETED);
+        if (allTerminal && hasCompleted) {
+            return TaskGroupStatus.DONE;
+        }
+
+        return TaskGroupStatus.NEW;
+    }
+
+    private void syncAllRequestsFromTaskGroup(Long taskGroupId, TaskGroupStatus taskGroupStatus) {
+        RescueRequestStatus mappedStatus = mapTaskGroupStatusToRescueRequestStatus(taskGroupStatus);
+        if (mappedStatus == null) {
+            return;
+        }
+
+        List<TaskGroupRequestEntity> links = taskGroupRequestRepository.findByTaskGroupId(taskGroupId);
+        if (links == null || links.isEmpty()) {
+            return;
+        }
+
+        List<RescueRequestEntity> requests = links.stream()
+                .map(TaskGroupRequestEntity::getRescueRequest)
+                .filter(Objects::nonNull)
+                .toList();
+        if (requests.isEmpty()) {
+            return;
+        }
+
+        for (RescueRequestEntity rr : requests) {
+            rr.setStatus(mappedStatus);
+            if (mappedStatus == RescueRequestStatus.COMPLETED) {
+                rr.setRescueResultConfirmationStatus("PENDING");
+                rr.setRescueResultConfirmationNote(null);
+                rr.setRescueResultConfirmedAt(null);
+            }
+        }
+        rescueRequestRepository.saveAll(requests);
+    }
+
+    private String buildTaskGroupSyncNote(
+            RescueRequestEntity request,
+            TaskGroupStatus oldGroupStatus,
+            TaskGroupStatus newGroupStatus,
+            String note) {
+        StringBuilder builder = new StringBuilder("Đồng bộ trạng thái nhóm từ yêu cầu ")
+                .append(request.getCode() == null ? ("#" + request.getId()) : request.getCode())
+                .append(": ")
+                .append(oldGroupStatus == null ? "UNKNOWN" : oldGroupStatus.name())
+                .append(" -> ")
+                .append(newGroupStatus.name());
+        String normalizedNote = normalizeText(note);
+        if (normalizedNote != null) {
+            builder.append(". Ghi chú: ").append(normalizedNote);
+        }
+        return builder.toString();
     }
 
     private String generateUniqueRescueRequestCode() {

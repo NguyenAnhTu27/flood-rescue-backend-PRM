@@ -1,0 +1,824 @@
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::               (v3.5.10)
+
+2026-03-23T14:04:13.442+07:00  INFO 33976 --- [           main] c.f.FloodRescueBackendApplication        : Starting FloodRescueBackendApplication v0.0.1-SNAPSHOT using Java 23.0.2 with PID 33976 (C:\Users\Asus\Documents\Playground\flood-rescue-backend-PRM\target\flood-rescue-backend-0.0.1-SNAPSHOT.jar started by Asus in C:\Users\Asus\Documents\Playground\flood-rescue-backend-PRM)
+2026-03-23T14:04:13.444+07:00  INFO 33976 --- [           main] c.f.FloodRescueBackendApplication        : No active profile set, falling back to 1 default profile: "default"
+2026-03-23T14:04:14.957+07:00  INFO 33976 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-03-23T14:04:15.746+07:00  INFO 33976 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 776 ms. Found 23 JPA repository interfaces.
+2026-03-23T14:04:19.794+07:00  INFO 33976 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2026-03-23T14:04:19.972+07:00  INFO 33976 --- [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-03-23T14:04:19.976+07:00  INFO 33976 --- [           main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.50]
+2026-03-23T14:04:20.262+07:00  INFO 33976 --- [           main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2026-03-23T14:04:20.266+07:00  INFO 33976 --- [           main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 6742 ms
+2026-03-23T14:04:21.710+07:00  INFO 33976 --- [           main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-03-23T14:04:22.337+07:00  INFO 33976 --- [           main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.6.41.Final
+2026-03-23T14:04:22.565+07:00  INFO 33976 --- [           main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2026-03-23T14:04:24.284+07:00  INFO 33976 --- [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-03-23T14:04:24.493+07:00  INFO 33976 --- [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-03-23T14:04:25.896+07:00  INFO 33976 --- [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@283e1759
+2026-03-23T14:04:25.901+07:00  INFO 33976 --- [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-03-23T14:04:26.189+07:00  WARN 33976 --- [           main] org.hibernate.orm.deprecation            : HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-03-23T14:04:26.279+07:00  INFO 33976 --- [           main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 8.0.43
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-03-23T14:04:29.773+07:00  WARN 33976 --- [           main] org.hibernate.mapping.RootClass          : HHH000038: Composite-id class does not override equals(): com.floodrescue.module.rescue.entity.TaskGroupRequestEntity$TaskGroupRequestId
+2026-03-23T14:04:29.782+07:00  WARN 33976 --- [           main] org.hibernate.mapping.RootClass          : HHH000039: Composite-id class does not override hashCode(): com.floodrescue.module.rescue.entity.TaskGroupRequestEntity$TaskGroupRequestId
+2026-03-23T14:04:35.305+07:00  INFO 33976 --- [           main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-03-23T14:04:35.319+07:00  INFO 33976 --- [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-03-23T14:04:36.933+07:00  INFO 33976 --- [           main] o.s.d.j.r.query.QueryEnhancerFactory     : Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-03-23T14:04:48.171+07:00  WARN 33976 --- [           main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-03-23T14:04:48.509+07:00  INFO 33976 --- [           main] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name customUserDetailsService
+2026-03-23T14:04:52.257+07:00  INFO 33976 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2026-03-23T14:04:52.422+07:00  INFO 33976 --- [           main] c.f.FloodRescueBackendApplication        : Started FloodRescueBackendApplication in 39.687 seconds (process running for 40.662)
+2026-03-23T14:04:53.435+07:00  INFO 33976 --- [           main] c.f.c.schema.SchemaCompatibilityRunner   : [SchemaCompatibility] Schema alignment completed
+Hibernate: 
+    select
+        re1_0.id,
+        re1_0.code,
+        re1_0.created_at,
+        re1_0.name 
+    from
+        roles re1_0 
+    where
+        re1_0.code=?
+Hibernate: 
+    select
+        re1_0.id,
+        re1_0.code,
+        re1_0.created_at,
+        re1_0.name 
+    from
+        roles re1_0 
+    where
+        re1_0.code=?
+Hibernate: 
+    select
+        re1_0.id,
+        re1_0.code,
+        re1_0.created_at,
+        re1_0.name 
+    from
+        roles re1_0 
+    where
+        re1_0.code=?
+Hibernate: 
+    select
+        re1_0.id,
+        re1_0.code,
+        re1_0.created_at,
+        re1_0.name 
+    from
+        roles re1_0 
+    where
+        re1_0.code=?
+Hibernate: 
+    select
+        re1_0.id,
+        re1_0.code,
+        re1_0.created_at,
+        re1_0.name 
+    from
+        roles re1_0 
+    where
+        re1_0.code=?
+Hibernate: 
+    select
+        ue1_0.id 
+    from
+        users ue1_0 
+    where
+        ue1_0.email=? 
+    limit
+        ?
+Hibernate: 
+    select
+        ue1_0.id 
+    from
+        users ue1_0 
+    where
+        ue1_0.email=? 
+    limit
+        ?
+Hibernate: 
+    select
+        ue1_0.id 
+    from
+        users ue1_0 
+    where
+        ue1_0.email=? 
+    limit
+        ?
+Hibernate: 
+    select
+        re1_0.id,
+        re1_0.code,
+        re1_0.created_at,
+        re1_0.name 
+    from
+        roles re1_0 
+    where
+        re1_0.code=?
+Hibernate: 
+    select
+        te1_0.id,
+        te1_0.code,
+        te1_0.created_at,
+        te1_0.current_latitude,
+        te1_0.current_location_text,
+        te1_0.current_location_updated_at,
+        te1_0.current_longitude,
+        te1_0.description,
+        te1_0.name,
+        te1_0.status,
+        te1_0.team_type,
+        te1_0.updated_at 
+    from
+        teams te1_0 
+    where
+        te1_0.name=?
+Hibernate: 
+    select
+        te1_0.id,
+        te1_0.code,
+        te1_0.created_at,
+        te1_0.current_latitude,
+        te1_0.current_location_text,
+        te1_0.current_location_updated_at,
+        te1_0.current_longitude,
+        te1_0.description,
+        te1_0.name,
+        te1_0.status,
+        te1_0.team_type,
+        te1_0.updated_at 
+    from
+        teams te1_0 
+    where
+        te1_0.name=?
+Hibernate: 
+    select
+        ue1_0.id 
+    from
+        users ue1_0 
+    where
+        ue1_0.phone=? 
+    limit
+        ?
+Hibernate: 
+    select
+        ue1_0.id 
+    from
+        users ue1_0 
+    where
+        ue1_0.phone=? 
+    limit
+        ?
+2026-03-23T14:07:14.937+07:00  INFO 33976 --- [nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-03-23T14:07:14.939+07:00  INFO 33976 --- [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2026-03-23T14:07:14.940+07:00  INFO 33976 --- [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+Hibernate: 
+    select
+        ue1_0.id,
+        ue1_0.created_at,
+        ue1_0.email,
+        ue1_0.full_name,
+        ue1_0.is_leader,
+        ue1_0.last_login_at,
+        ue1_0.password_hash,
+        ue1_0.phone,
+        ue1_0.rescue_request_blocked,
+        ue1_0.rescue_request_blocked_reason,
+        ue1_0.role_id,
+        ue1_0.status,
+        ue1_0.team_id,
+        ue1_0.updated_at 
+    from
+        users ue1_0 
+    where
+        ue1_0.phone=?
+Hibernate: 
+    update
+        users 
+    set
+        created_at=?,
+        email=?,
+        full_name=?,
+        is_leader=?,
+        last_login_at=?,
+        password_hash=?,
+        phone=?,
+        rescue_request_blocked=?,
+        rescue_request_blocked_reason=?,
+        role_id=?,
+        status=?,
+        team_id=?,
+        updated_at=? 
+    where
+        id=?
+Hibernate: 
+    select
+        re1_0.id,
+        re1_0.code,
+        re1_0.created_at,
+        re1_0.name 
+    from
+        roles re1_0 
+    where
+        re1_0.id=?
+Hibernate: 
+    select
+        ue1_0.id,
+        ue1_0.created_at,
+        ue1_0.email,
+        ue1_0.full_name,
+        ue1_0.is_leader,
+        ue1_0.last_login_at,
+        ue1_0.password_hash,
+        ue1_0.phone,
+        ue1_0.rescue_request_blocked,
+        ue1_0.rescue_request_blocked_reason,
+        ue1_0.role_id,
+        ue1_0.status,
+        ue1_0.team_id,
+        ue1_0.updated_at 
+    from
+        users ue1_0 
+    where
+        ue1_0.phone=?
+Hibernate: 
+    update
+        users 
+    set
+        created_at=?,
+        email=?,
+        full_name=?,
+        is_leader=?,
+        last_login_at=?,
+        password_hash=?,
+        phone=?,
+        rescue_request_blocked=?,
+        rescue_request_blocked_reason=?,
+        role_id=?,
+        status=?,
+        team_id=?,
+        updated_at=? 
+    where
+        id=?
+Hibernate: 
+    select
+        re1_0.id,
+        re1_0.code,
+        re1_0.created_at,
+        re1_0.name 
+    from
+        roles re1_0 
+    where
+        re1_0.id=?
+Hibernate: 
+    select
+        ue1_0.id,
+        ue1_0.created_at,
+        ue1_0.email,
+        ue1_0.full_name,
+        ue1_0.is_leader,
+        ue1_0.last_login_at,
+        ue1_0.password_hash,
+        ue1_0.phone,
+        ue1_0.rescue_request_blocked,
+        ue1_0.rescue_request_blocked_reason,
+        ue1_0.role_id,
+        r1_0.id,
+        r1_0.code,
+        r1_0.created_at,
+        r1_0.name,
+        ue1_0.status,
+        ue1_0.team_id,
+        ue1_0.updated_at 
+    from
+        users ue1_0 
+    join
+        roles r1_0 
+            on r1_0.id=ue1_0.role_id 
+    where
+        ue1_0.id=?
+Hibernate: 
+    select
+        ue1_0.id,
+        ue1_0.created_at,
+        ue1_0.email,
+        ue1_0.full_name,
+        ue1_0.is_leader,
+        ue1_0.last_login_at,
+        ue1_0.password_hash,
+        ue1_0.phone,
+        ue1_0.rescue_request_blocked,
+        ue1_0.rescue_request_blocked_reason,
+        ue1_0.role_id,
+        ue1_0.status,
+        ue1_0.team_id,
+        ue1_0.updated_at 
+    from
+        users ue1_0 
+    where
+        ue1_0.id=?
+Hibernate: 
+    select
+        tge1_0.id,
+        tge1_0.assigned_team_id,
+        tge1_0.code,
+        tge1_0.created_at,
+        tge1_0.created_by,
+        tge1_0.note,
+        tge1_0.status,
+        tge1_0.updated_at 
+    from
+        task_groups tge1_0 
+    where
+        tge1_0.id=?
+Hibernate: 
+    select
+        tgre1_0.rescue_request_id,
+        tgre1_0.task_group_id,
+        tgre1_0.added_at 
+    from
+        task_group_requests tgre1_0 
+    join
+        task_groups tg1_0 
+            on tg1_0.id=tgre1_0.task_group_id 
+    where
+        tg1_0.id=?
+Hibernate: 
+    select
+        rae1_0.id,
+        rae1_0.asset_id,
+        rae1_0.assigned_at,
+        rae1_0.assigned_by,
+        rae1_0.is_active,
+        rae1_0.task_group_id,
+        rae1_0.team_id 
+    from
+        rescue_assignments rae1_0 
+    join
+        task_groups tg1_0 
+            on tg1_0.id=rae1_0.task_group_id 
+    where
+        tg1_0.id=? 
+        and rae1_0.is_active
+Hibernate: 
+    select
+        tgte1_0.id,
+        tgte1_0.actor_id,
+        tgte1_0.created_at,
+        tgte1_0.event_type,
+        tgte1_0.note,
+        tgte1_0.task_group_id 
+    from
+        task_group_timeline tgte1_0 
+    join
+        task_groups tg1_0 
+            on tg1_0.id=tgte1_0.task_group_id 
+    where
+        tg1_0.id=? 
+    order by
+        tgte1_0.created_at desc
+Hibernate: 
+    select
+        te1_0.id,
+        te1_0.code,
+        te1_0.created_at,
+        te1_0.current_latitude,
+        te1_0.current_location_text,
+        te1_0.current_location_updated_at,
+        te1_0.current_longitude,
+        te1_0.description,
+        te1_0.name,
+        te1_0.status,
+        te1_0.team_type,
+        te1_0.updated_at 
+    from
+        teams te1_0 
+    where
+        te1_0.id=?
+Hibernate: 
+    select
+        ue1_0.id,
+        ue1_0.created_at,
+        ue1_0.email,
+        ue1_0.full_name,
+        ue1_0.is_leader,
+        ue1_0.last_login_at,
+        ue1_0.password_hash,
+        ue1_0.phone,
+        ue1_0.rescue_request_blocked,
+        ue1_0.rescue_request_blocked_reason,
+        ue1_0.role_id,
+        ue1_0.status,
+        ue1_0.team_id,
+        ue1_0.updated_at 
+    from
+        users ue1_0 
+    where
+        ue1_0.id=?
+Hibernate: 
+    select
+        rre1_0.id,
+        rre1_0.address_text,
+        rre1_0.affected_people_count,
+        rre1_0.citizen_id,
+        rre1_0.code,
+        rre1_0.coordinator_cancel_note,
+        rre1_0.created_at,
+        rre1_0.description,
+        rre1_0.emergency_no,
+        rre1_0.emergency_parent_request_id,
+        rre1_0.is_emergency,
+        rre1_0.latitude,
+        rre1_0.location_description,
+        rre1_0.location_verified,
+        rre1_0.longitude,
+        rre1_0.master_request_id,
+        rre1_0.priority,
+        rre1_0.rescue_result_confirmation_note,
+        rre1_0.rescue_result_confirmation_status,
+        rre1_0.rescue_result_confirmed_at,
+        rre1_0.source_team_id,
+        rre1_0.status,
+        rre1_0.updated_at,
+        rre1_0.waiting_for_team 
+    from
+        rescue_requests rre1_0 
+    where
+        rre1_0.id=?
+Hibernate: 
+    select
+        ue1_0.id,
+        ue1_0.created_at,
+        ue1_0.email,
+        ue1_0.full_name,
+        ue1_0.is_leader,
+        ue1_0.last_login_at,
+        ue1_0.password_hash,
+        ue1_0.phone,
+        ue1_0.rescue_request_blocked,
+        ue1_0.rescue_request_blocked_reason,
+        ue1_0.role_id,
+        ue1_0.status,
+        ue1_0.team_id,
+        ue1_0.updated_at 
+    from
+        users ue1_0 
+    where
+        ue1_0.id=?
+Hibernate: 
+    select
+        ue1_0.id,
+        ue1_0.created_at,
+        ue1_0.email,
+        ue1_0.full_name,
+        ue1_0.is_leader,
+        ue1_0.last_login_at,
+        ue1_0.password_hash,
+        ue1_0.phone,
+        ue1_0.rescue_request_blocked,
+        ue1_0.rescue_request_blocked_reason,
+        ue1_0.role_id,
+        r1_0.id,
+        r1_0.code,
+        r1_0.created_at,
+        r1_0.name,
+        ue1_0.status,
+        ue1_0.team_id,
+        ue1_0.updated_at 
+    from
+        users ue1_0 
+    join
+        roles r1_0 
+            on r1_0.id=ue1_0.role_id 
+    where
+        ue1_0.id=?
+Hibernate: 
+    select
+        rre1_0.id,
+        rre1_0.address_text,
+        rre1_0.affected_people_count,
+        rre1_0.citizen_id,
+        rre1_0.code,
+        rre1_0.coordinator_cancel_note,
+        rre1_0.created_at,
+        rre1_0.description,
+        rre1_0.emergency_no,
+        rre1_0.emergency_parent_request_id,
+        rre1_0.is_emergency,
+        rre1_0.latitude,
+        rre1_0.location_description,
+        rre1_0.location_verified,
+        rre1_0.longitude,
+        rre1_0.master_request_id,
+        rre1_0.priority,
+        rre1_0.rescue_result_confirmation_note,
+        rre1_0.rescue_result_confirmation_status,
+        rre1_0.rescue_result_confirmed_at,
+        rre1_0.source_team_id,
+        rre1_0.status,
+        rre1_0.updated_at,
+        rre1_0.waiting_for_team 
+    from
+        rescue_requests rre1_0 
+    where
+        rre1_0.id=?
+Hibernate: 
+    select
+        tgre1_0.rescue_request_id,
+        tgre1_0.task_group_id,
+        tgre1_0.added_at 
+    from
+        task_group_requests tgre1_0 
+    join
+        rescue_requests rr1_0 
+            on rr1_0.id=tgre1_0.rescue_request_id 
+    where
+        rr1_0.id=?
+Hibernate: 
+    select
+        tge1_0.id,
+        tge1_0.assigned_team_id,
+        tge1_0.code,
+        tge1_0.created_at,
+        tge1_0.created_by,
+        tge1_0.note,
+        tge1_0.status,
+        tge1_0.updated_at 
+    from
+        task_groups tge1_0 
+    where
+        tge1_0.id=?
+Hibernate: 
+    select
+        rrae1_0.id,
+        rrae1_0.created_at,
+        rrae1_0.file_type,
+        rrae1_0.file_url,
+        rrae1_0.rescue_request_id 
+    from
+        rescue_request_attachments rrae1_0 
+    join
+        rescue_requests rr1_0 
+            on rr1_0.id=rrae1_0.rescue_request_id 
+    where
+        rr1_0.id=?
+Hibernate: 
+    select
+        rrte1_0.id,
+        rrte1_0.actor_id,
+        rrte1_0.created_at,
+        rrte1_0.event_type,
+        rrte1_0.from_status,
+        rrte1_0.note,
+        rrte1_0.rescue_request_id,
+        rrte1_0.to_status 
+    from
+        rescue_request_timeline rrte1_0 
+    join
+        rescue_requests rr1_0 
+            on rr1_0.id=rrte1_0.rescue_request_id 
+    where
+        rr1_0.id=? 
+    order by
+        rrte1_0.created_at desc
+Hibernate: 
+    select
+        ue1_0.id,
+        ue1_0.created_at,
+        ue1_0.email,
+        ue1_0.full_name,
+        ue1_0.is_leader,
+        ue1_0.last_login_at,
+        ue1_0.password_hash,
+        ue1_0.phone,
+        ue1_0.rescue_request_blocked,
+        ue1_0.rescue_request_blocked_reason,
+        ue1_0.role_id,
+        ue1_0.status,
+        ue1_0.team_id,
+        ue1_0.updated_at 
+    from
+        users ue1_0 
+    where
+        ue1_0.id=?
+Hibernate: 
+    select
+        ue1_0.id,
+        ue1_0.created_at,
+        ue1_0.email,
+        ue1_0.full_name,
+        ue1_0.is_leader,
+        ue1_0.last_login_at,
+        ue1_0.password_hash,
+        ue1_0.phone,
+        ue1_0.rescue_request_blocked,
+        ue1_0.rescue_request_blocked_reason,
+        ue1_0.role_id,
+        ue1_0.status,
+        ue1_0.team_id,
+        ue1_0.updated_at 
+    from
+        users ue1_0 
+    where
+        ue1_0.id=?
+Hibernate: 
+    select
+        ue1_0.id,
+        ue1_0.created_at,
+        ue1_0.email,
+        ue1_0.full_name,
+        ue1_0.is_leader,
+        ue1_0.last_login_at,
+        ue1_0.password_hash,
+        ue1_0.phone,
+        ue1_0.rescue_request_blocked,
+        ue1_0.rescue_request_blocked_reason,
+        ue1_0.role_id,
+        r1_0.id,
+        r1_0.code,
+        r1_0.created_at,
+        r1_0.name,
+        ue1_0.status,
+        ue1_0.team_id,
+        ue1_0.updated_at 
+    from
+        users ue1_0 
+    join
+        roles r1_0 
+            on r1_0.id=ue1_0.role_id 
+    where
+        ue1_0.id=?
+Hibernate: 
+    select
+        ue1_0.id,
+        ue1_0.created_at,
+        ue1_0.email,
+        ue1_0.full_name,
+        ue1_0.is_leader,
+        ue1_0.last_login_at,
+        ue1_0.password_hash,
+        ue1_0.phone,
+        ue1_0.rescue_request_blocked,
+        ue1_0.rescue_request_blocked_reason,
+        ue1_0.role_id,
+        ue1_0.status,
+        ue1_0.team_id,
+        ue1_0.updated_at 
+    from
+        users ue1_0 
+    where
+        ue1_0.id=?
+Hibernate: 
+    select
+        tge1_0.id,
+        tge1_0.assigned_team_id,
+        tge1_0.code,
+        tge1_0.created_at,
+        tge1_0.created_by,
+        tge1_0.note,
+        tge1_0.status,
+        tge1_0.updated_at 
+    from
+        task_groups tge1_0 
+    where
+        tge1_0.id=?
+2026-03-23T14:07:16.040+07:00 ERROR 33976 --- [nio-8080-exec-5] c.f.s.exception.GlobalExceptionHandler   : Unhandled exception: Nhóm nhiệm vụ không tồn tại
+
+com.floodrescue.shared.exception.NotFoundException: Nhóm nhiệm vụ không tồn tại
+	at com.floodrescue.module.rescue.service.RescuerTaskServiceImpl.lambda$5(RescuerTaskServiceImpl.java:144) ~[!/:0.0.1-SNAPSHOT]
+	at java.base/java.util.Optional.orElseThrow(Optional.java:403) ~[na:na]
+	at com.floodrescue.module.rescue.service.RescuerTaskServiceImpl.updateMyTaskGroupStatus(RescuerTaskServiceImpl.java:144) ~[!/:0.0.1-SNAPSHOT]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[na:na]
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:360) ~[spring-aop-6.2.15.jar!/:6.2.15]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:196) ~[spring-aop-6.2.15.jar!/:6.2.15]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163) ~[spring-aop-6.2.15.jar!/:6.2.15]
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:380) ~[spring-tx-6.2.15.jar!/:6.2.15]
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:119) ~[spring-tx-6.2.15.jar!/:6.2.15]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184) ~[spring-aop-6.2.15.jar!/:6.2.15]
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:728) ~[spring-aop-6.2.15.jar!/:6.2.15]
+	at com.floodrescue.module.rescue.service.RescuerTaskServiceImpl$$SpringCGLIB$$0.updateMyTaskGroupStatus(<generated>) ~[!/:0.0.1-SNAPSHOT]
+	at com.floodrescue.module.rescue.controller.RescuerTaskController.updateMyTaskGroupStatus(RescuerTaskController.java:118) ~[!/:0.0.1-SNAPSHOT]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[na:na]
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:258) ~[spring-web-6.2.15.jar!/:6.2.15]
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:191) ~[spring-web-6.2.15.jar!/:6.2.15]
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:118) ~[spring-webmvc-6.2.15.jar!/:6.2.15]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:991) ~[spring-webmvc-6.2.15.jar!/:6.2.15]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:896) ~[spring-webmvc-6.2.15.jar!/:6.2.15]
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87) ~[spring-webmvc-6.2.15.jar!/:6.2.15]
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1089) ~[spring-webmvc-6.2.15.jar!/:6.2.15]
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:979) ~[spring-webmvc-6.2.15.jar!/:6.2.15]
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014) ~[spring-webmvc-6.2.15.jar!/:6.2.15]
+	at org.springframework.web.servlet.FrameworkServlet.doPut(FrameworkServlet.java:925) ~[spring-webmvc-6.2.15.jar!/:6.2.15]
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:593) ~[tomcat-embed-core-10.1.50.jar!/:na]
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885) ~[spring-webmvc-6.2.15.jar!/:6.2.15]
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658) ~[tomcat-embed-core-10.1.50.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193) ~[tomcat-embed-core-10.1.50.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:138) ~[tomcat-embed-core-10.1.50.jar!/:na]
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51) ~[tomcat-embed-websocket-10.1.50.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:162) ~[tomcat-embed-core-10.1.50.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:138) ~[tomcat-embed-core-10.1.50.jar!/:na]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:110) ~[spring-web-6.2.15.jar!/:6.2.15]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:162) ~[tomcat-embed-core-10.1.50.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:138) ~[tomcat-embed-core-10.1.50.jar!/:na]
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:108) ~[spring-web-6.2.15.jar!/:6.2.15]
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:108) ~[spring-web-6.2.15.jar!/:6.2.15]
+	at org.springframework.security.web.FilterChainProxy.lambda$doFilterInternal$3(FilterChainProxy.java:231) ~[spring-security-web-6.5.7.jar!/:6.5.7]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:365) ~[spring-security-web-6.5.7.jar!/:6.5.7]
+	at org.springframework.security.web.access.intercept.AuthorizationFilter.doFilter(AuthorizationFilter.java:101) ~[spring-security-web-6.5.7.jar!/:6.5.7]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.5.7.jar!/:6.5.7]
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:125) ~[spring-security-web-6.5.7.jar!/:6.5.7]
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:119) ~[spring-security-web-6.5.7.jar!/:6.5.7]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.5.7.jar!/:6.5.7]
+	at org.springframework.security.web.session.SessionManagementFilter.doFilter(SessionManagementFilter.java:131) ~[spring-security-web-6.5.7.jar!/:6.5.7]
+	at org.springframework.security.web.session.SessionManagementFilter.doFilter(SessionManagementFilter.java:85) ~[spring-security-web-6.5.7.jar!/:6.5.7]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.5.7.jar!/:6.5.7]
+	at org.springframework.security.web.authentication.AnonymousAuthenticationFilter.doFilter(AnonymousAuthenticationFilter.java:100) ~[spring-security-web-6.5.7.jar!/:6.5.7]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.5.7.jar!/:6.5.7]
+	at org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter.doFilter(SecurityContextHolderAwareRequestFilter.java:179) ~[spring-security-web-6.5.7.jar!/:6.5.7]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.5.7.jar!/:6.5.7]
+	at org.springframework.security.web.savedrequest.RequestCacheAwareFilter.doFilter(RequestCacheAwareFilter.java:63) ~[spring-security-web-6.5.7.jar!/:6.5.7]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.5.7.jar!/:6.5.7]
+	at com.floodrescue.config.security.JwtAuthenticationFilter.doFilterInternal(JwtAuthenticationFilter.java:48) ~[!/:0.0.1-SNAPSHOT]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.2.15.jar!/:6.2.15]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.5.7.jar!/:6.5.7]
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:107) ~[spring-security-web-6.5.7.jar!/:6.5.7]
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:93) ~[spring-security-web-6.5.7.jar!/:6.5.7]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.5.7.jar!/:6.5.7]
+	at org.springframework.web.filter.CorsFilter.doFilterInternal(CorsFilter.java:91) ~[spring-web-6.2.15.jar!/:6.2.15]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.2.15.jar!/:6.2.15]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.5.7.jar!/:6.5.7]
+	at org.springframework.security.web.header.HeaderWriterFilter.doHeadersAfter(HeaderWriterFilter.java:90) ~[spring-security-web-6.5.7.jar!/:6.5.7]
+	at org.springframework.security.web.header.HeaderWriterFilter.doFilterInternal(HeaderWriterFilter.java:75) ~[spring-security-web-6.5.7.jar!/:6.5.7]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.2.15.jar!/:6.2.15]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.5.7.jar!/:6.5.7]
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:82) ~[spring-security-web-6.5.7.jar!/:6.5.7]
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:69) ~[spring-security-web-6.5.7.jar!/:6.5.7]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.5.7.jar!/:6.5.7]
+	at org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter.doFilterInternal(WebAsyncManagerIntegrationFilter.java:62) ~[spring-security-web-6.5.7.jar!/:6.5.7]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.2.15.jar!/:6.2.15]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.5.7.jar!/:6.5.7]
+	at org.springframework.security.web.session.DisableEncodeUrlFilter.doFilterInternal(DisableEncodeUrlFilter.java:42) ~[spring-security-web-6.5.7.jar!/:6.5.7]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.2.15.jar!/:6.2.15]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.5.7.jar!/:6.5.7]
+	at org.springframework.security.web.FilterChainProxy.doFilterInternal(FilterChainProxy.java:233) ~[spring-security-web-6.5.7.jar!/:6.5.7]
+	at org.springframework.security.web.FilterChainProxy.doFilter(FilterChainProxy.java:191) ~[spring-security-web-6.5.7.jar!/:6.5.7]
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113) ~[spring-web-6.2.15.jar!/:6.2.15]
+	at org.springframework.web.filter.ServletRequestPathFilter.doFilter(ServletRequestPathFilter.java:52) ~[spring-web-6.2.15.jar!/:6.2.15]
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113) ~[spring-web-6.2.15.jar!/:6.2.15]
+	at org.springframework.web.filter.CompositeFilter.doFilter(CompositeFilter.java:74) ~[spring-web-6.2.15.jar!/:6.2.15]
+	at org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration$CompositeFilterChainProxy.doFilter(WebSecurityConfiguration.java:319) ~[spring-security-config-6.5.7.jar!/:6.5.7]
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113) ~[spring-web-6.2.15.jar!/:6.2.15]
+	at org.springframework.web.servlet.handler.HandlerMappingIntrospector.lambda$createCacheFilter$4(HandlerMappingIntrospector.java:267) ~[spring-webmvc-6.2.15.jar!/:6.2.15]
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113) ~[spring-web-6.2.15.jar!/:6.2.15]
+	at org.springframework.web.filter.CompositeFilter.doFilter(CompositeFilter.java:74) ~[spring-web-6.2.15.jar!/:6.2.15]
+	at org.springframework.security.config.annotation.web.configuration.WebMvcSecurityConfiguration$CompositeFilterChainProxy.doFilter(WebMvcSecurityConfiguration.java:240) ~[spring-security-config-6.5.7.jar!/:6.5.7]
+	at org.springframework.web.filter.DelegatingFilterProxy.invokeDelegate(DelegatingFilterProxy.java:362) ~[spring-web-6.2.15.jar!/:6.2.15]
+	at org.springframework.web.filter.DelegatingFilterProxy.doFilter(DelegatingFilterProxy.java:278) ~[spring-web-6.2.15.jar!/:6.2.15]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:162) ~[tomcat-embed-core-10.1.50.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:138) ~[tomcat-embed-core-10.1.50.jar!/:na]
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100) ~[spring-web-6.2.15.jar!/:6.2.15]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.2.15.jar!/:6.2.15]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:162) ~[tomcat-embed-core-10.1.50.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:138) ~[tomcat-embed-core-10.1.50.jar!/:na]
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93) ~[spring-web-6.2.15.jar!/:6.2.15]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.2.15.jar!/:6.2.15]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:162) ~[tomcat-embed-core-10.1.50.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:138) ~[tomcat-embed-core-10.1.50.jar!/:na]
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201) ~[spring-web-6.2.15.jar!/:6.2.15]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.2.15.jar!/:6.2.15]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:162) ~[tomcat-embed-core-10.1.50.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:138) ~[tomcat-embed-core-10.1.50.jar!/:na]
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:165) ~[tomcat-embed-core-10.1.50.jar!/:na]
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:88) ~[tomcat-embed-core-10.1.50.jar!/:na]
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:482) ~[tomcat-embed-core-10.1.50.jar!/:na]
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:113) ~[tomcat-embed-core-10.1.50.jar!/:na]
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:83) ~[tomcat-embed-core-10.1.50.jar!/:na]
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:72) ~[tomcat-embed-core-10.1.50.jar!/:na]
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:342) ~[tomcat-embed-core-10.1.50.jar!/:na]
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:399) ~[tomcat-embed-core-10.1.50.jar!/:na]
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63) ~[tomcat-embed-core-10.1.50.jar!/:na]
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:903) ~[tomcat-embed-core-10.1.50.jar!/:na]
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1774) ~[tomcat-embed-core-10.1.50.jar!/:na]
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52) ~[tomcat-embed-core-10.1.50.jar!/:na]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:973) ~[tomcat-embed-core-10.1.50.jar!/:na]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:491) ~[tomcat-embed-core-10.1.50.jar!/:na]
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63) ~[tomcat-embed-core-10.1.50.jar!/:na]
+	at java.base/java.lang.Thread.run(Thread.java:1575) ~[na:na]
+

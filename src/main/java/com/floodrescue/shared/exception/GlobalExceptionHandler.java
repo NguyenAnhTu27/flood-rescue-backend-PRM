@@ -4,6 +4,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.*;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.*;
@@ -26,6 +27,13 @@ public class GlobalExceptionHandler {
         ));
     }
 
+    @ExceptionHandler(NotFoundException.class)
+    public ResponseEntity<?> handleNotFound(NotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of(
+                "message", ex.getMessage()
+        ));
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<?> handleValidation(MethodArgumentNotValidException ex) {
         Map<String, String> errors = new LinkedHashMap<>();
@@ -34,6 +42,15 @@ public class GlobalExceptionHandler {
         return ResponseEntity.badRequest().body(Map.of(
                 "message", "Dữ liệu không hợp lệ",
                 "errors", errors
+        ));
+    }
+
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    public ResponseEntity<?> handleTypeMismatch(MethodArgumentTypeMismatchException ex) {
+        String name = ex.getName() == null ? "tham số" : ex.getName();
+        String value = ex.getValue() == null ? "" : String.valueOf(ex.getValue());
+        return ResponseEntity.badRequest().body(Map.of(
+                "message", "Giá trị không hợp lệ cho " + name + (value.isBlank() ? "" : ": " + value)
         ));
     }
 
